@@ -22,6 +22,8 @@ MUTATION_AMOUNT = 0.3
 CROSSOVER_RATE = 0.9
 BEST_SOLUTIONS = []
 POPULATION_SIZE = 200
+genearations = []
+fitnesses = []
 
 ADAPTIVE_INCREMENT = 0.5  # Increment for mutation rate when stuck
 MIN_MUTATION_RATE = 0.1
@@ -221,10 +223,12 @@ def run_genetic_algorithm_with_adaptations():
     prev_avg_fitness = 0
 
     for generation in range(NUM_GENERATIONS):
+        genearations.append(generation)
         fitness_values = evaluate_population_multi_positions(population)
 
         best_idx = np.argmax(fitness_values)
         best_solution = population[best_idx]
+        fitnesses.append(fitness_values[best_idx]*100)
         BEST_SOLUTIONS.append((best_solution, fitness_values[best_idx]))
 
         population, prev_avg_fitness = create_new_generation_with_adaptations(
@@ -292,6 +296,10 @@ def compute_positions_3d(angles):
 
     return [(0, 0, 0), (x1, y1, z1), (x2, y2, z2)]
 
+plt.plot(genearations,fitnesses)
+plt.title('Fitness vs Generations')
+plt.xlabel("Generations")
+plt.ylabel("Fitness")
 
 fig = plt.figure(figsize=(10, 10))
 ax = fig.add_subplot(111, projection="3d")
